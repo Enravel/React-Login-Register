@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// ROUTER
+import { Route, Switch } from 'react-router-dom';
+
+// COMPONENTS
+import Index from './Routes/IndexRoute/Index';
+import Login from './Routes/LoginRoute/Login';
+import Register from './Routes/RegisterRoute/Register';
+import Home from './Routes/HomeRoute/Home';
+import User from './Routes/UserRoute/User';
+import NotFound from './Routes/NotFoundRoute/NotFound';
+
+// SCSS
+import './App.scss';
+
+export default class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Switch>
+          <Route exact path="/">
+            <Index />
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/register">
+            <Register />
+          </Route>
+          <Route exact path="/home">
+            <Home />
+          </Route>
+          <Route exact path="/user">
+            <User />
+          </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
+      </div>
+    );
+  }
 }
-
-export default App;
