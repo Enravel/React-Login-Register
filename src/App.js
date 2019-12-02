@@ -9,6 +9,7 @@ import Login from './Routes/LoginRoute/Login';
 import Register from './Routes/RegisterRoute/Register';
 import Home from './Routes/HomeRoute/Home';
 import User from './Routes/UserRoute/User';
+import Admin from './Routes/AdminRoute/Admin';
 import NotFound from './Routes/NotFoundRoute/NotFound';
 
 // SCSS
@@ -31,6 +32,9 @@ export default class App extends Component {
           </Route>
           <Route exact path="/user">
             <User />
+          </Route>
+          <Route path="/admin">
+            <Admin />
           </Route>
           <Route path="*">
             <NotFound />

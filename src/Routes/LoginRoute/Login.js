@@ -60,7 +60,13 @@ export default class Login extends Component {
           <>
             <h1>You are already logged in!</h1>
             {/* contexts > localStorageContext > this.state.shouldRedirect its passed as true for 100ms in loginSuccess() */}
-            {shouldRedirect && <Redirect push to="/home" />}
+            {/* every user has a uuid() generated id, instead of admin so thats how the app knows if its admin and redirects accordingly */}
+            {shouldRedirect &&
+              (currentUser.admin ? (
+                <Redirect push to="/admin" />
+              ) : (
+                <Redirect push to="/home" />
+              ))}
           </>
         )}
       </div>

@@ -11,8 +11,13 @@ function alreadyExists(value, item, users) {
 
 export function validateRegister(state, users) {
   const { username, email, password, repeatPassword } = state;
+  // validating so that user cannot create admin accout, because if he does its not usable since validateLogin first looks in localStorate > key = admin
+  if (username.toLowerCase() === 'admin')
+    return 'Username reserved, choose another one!';
+  else if (email === 'admin@admin.com')
+    return 'Email reserved, choose another one!';
   // validating username
-  if (username === '') return 'Username is required!';
+  else if (username === '') return 'Username is required!';
   else if (username.length > 8)
     return 'Username has to have less than 8 characters!';
   else if (username !== username.toLowerCase())
@@ -35,6 +40,9 @@ export function validateRegister(state, users) {
 
 export function validateLogin(state, users) {
   const { email, password } = state;
+  // getting admin data
+  const admin = JSON.parse(localStorage.getItem('admin'));
+  admin.username = 'ADMIN';
   let matchingIndex;
   // map() below looks for the matching email and updates matchingIndex so the app can know at what index to pull the id in matchingID
   Object.values(users).map(
@@ -43,7 +51,10 @@ export function validateLogin(state, users) {
       (matchingIndex = index)
   );
   const matchingID = Object.keys(users)[matchingIndex];
-  if (matchingIndex === undefined)
+  // checking if input === admin
+  if (email === admin.email && password === admin.password)
+    return { user: admin, success: true, id: 'admin' };
+  else if (matchingIndex === undefined)
     return "Can't find that email in localStorage";
   else if (users[matchingID].password !== password)
     return 'Password is not matching with your email';

@@ -8,6 +8,13 @@ import { validateRegister, validateLogin } from '../helpers/validations';
 export const LocalStorageContext = createContext();
 
 export class LocalStorageProvider extends Component {
+  // admin info that is stored in localStorage on componentDidMount()
+  static defaultProps = {
+    admin: {
+      email: 'admin@admin.com',
+      password: 'admin'
+    }
+  };
   constructor() {
     super();
     this.state = {
@@ -36,6 +43,11 @@ export class LocalStorageProvider extends Component {
     this.logout = this.logout.bind(this);
   }
 
+  // setting admin account in localStorage
+  componentDidMount() {
+    localStorage.setItem('admin', JSON.stringify(this.props.admin));
+  }
+
   // za handleChange funkciju ispod
 
   // razmisljao sam o ovome ali mislim da se cak i ne isplati zato sto treba argument da se ubaci sto znaci da na svaki function call sto je 4 puta u register.js i 2 u login.js
@@ -43,7 +55,7 @@ export class LocalStorageProvider extends Component {
   // drugi nacin bi bio da napravim metodu koja ce da pozove ovu funkciju, sto znaci da se prave 2 posebne metode koje zovu tu funkciju umesto 2 funkcije to bi trebalo da je brze
   // ali za sad mi te componente nemaju constructor tako da za svaku metodu bi trebao da pravim constructor da bi bindovo i ako sve uzmem u obzir mislim da je ovako brze mada opet  // ne znam koliko vremena react oduzme da napravi constructor pa cisto posle kad upgradujemo aplikaciju neka ga tu mozda nam zatreba
 
-  // realno ne znam ni dal bi funkcija radila nisam probao xd ali moze da se napravi
+  // realno ne znam ni dal bi funkcija radila nisam probao ali moze da se napravi
 
   // handleChange(item) {
   //   return function handleItemChange(event) {
@@ -146,7 +158,7 @@ export class LocalStorageProvider extends Component {
       submitLogin,
       logout
     } = this;
-    const { register, login, shouldRedirect, currentUser } = this.state;
+    const { register, login, shouldRedirect, currentUser, users } = this.state;
     return (
       <LocalStorageContext.Provider
         value={{
@@ -158,7 +170,8 @@ export class LocalStorageProvider extends Component {
           handleLoginChange,
           submitLogin,
           currentUser,
-          logout
+          logout,
+          users
         }}
       >
         {this.props.children}
