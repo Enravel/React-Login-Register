@@ -33,4 +33,19 @@ export function validateRegister(state, users) {
   // returns string errors that are used to alert the error in contexts/localStorage.context.js > registrationFailure() (for now)
 }
 
-export function validateLogin(state) {}
+export function validateLogin(state, users) {
+  const { email, password } = state;
+  let matchingIndex;
+  // map() below looks for the matching email and updates matchingIndex so the app can know at what index to pull the id in matchingID
+  Object.values(users).map(
+    (user, index) =>
+      user.email.toLowerCase() === email.toLowerCase() &&
+      (matchingIndex = index)
+  );
+  const matchingID = Object.keys(users)[matchingIndex];
+  if (matchingIndex === undefined)
+    return "Can't find that email in localStorage";
+  else if (users[matchingID].password !== password)
+    return 'Password is not matching with your email';
+  return { user: users[matchingID], success: true, id: matchingID };
+}
