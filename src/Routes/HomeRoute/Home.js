@@ -18,7 +18,9 @@ export default class Home extends Component {
         <Navbar />
         {/* locks the page if the user is not logged in */}
         {currentUser ? (
-          <h1>Home</h1>
+          <>
+            <h1>Home</h1>
+          </>
         ) : (
           <h1>You have to log in to see this page</h1>
         )}

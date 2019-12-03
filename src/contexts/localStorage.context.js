@@ -41,6 +41,7 @@ export class LocalStorageProvider extends Component {
     this.submitLogin = this.submitLogin.bind(this);
 
     this.logout = this.logout.bind(this);
+    this.removeUser = this.removeUser.bind(this);
   }
 
   // setting admin account in localStorage
@@ -150,13 +151,29 @@ export class LocalStorageProvider extends Component {
     localStorage.removeItem('currentUser');
   }
 
+  removeUser(email) {
+    const currentState = this.state.users;
+    let matchingIndex;
+    Object.values(currentState).map(
+      (user, index) =>
+        user.email.toLowerCase() === email.toLowerCase() &&
+        (matchingIndex = index)
+    );
+    const matchingID = Object.keys(currentState)[matchingIndex];
+    delete currentState[matchingID];
+
+    this.setState({ users: currentState });
+    localStorage.setItem('users', JSON.stringify(this.state.users));
+  }
+
   render() {
     const {
       handleRegisterChange,
       submitRegister,
       handleLoginChange,
       submitLogin,
-      logout
+      logout,
+      removeUser
     } = this;
     const { register, login, shouldRedirect, currentUser, users } = this.state;
     return (
@@ -171,6 +188,7 @@ export class LocalStorageProvider extends Component {
           submitLogin,
           currentUser,
           logout,
+          removeUser,
           users
         }}
       >
