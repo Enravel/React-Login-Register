@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+// CONTEXT
+import { LocalStorageContext } from '../../contexts/localStorage.context';
+
 // ROUTE STUFF
 import { Link } from 'react-router-dom';
 
@@ -7,13 +10,24 @@ import { Link } from 'react-router-dom';
 import './Index.scss';
 
 export default class Index extends Component {
+  static contextType = LocalStorageContext;
   render() {
+    const { currentUser } = this.context;
     return (
       <div className="Index">
-        <h1>Welcome to React Task 5</h1>
-        <Link to="/login">Login</Link>
-        <br />
-        <Link to="/register">Register</Link>
+        {currentUser ? (
+          <>
+            <h1>Welcome to React Task 5</h1>
+            <Link to="/home">Home</Link>
+          </>
+        ) : (
+          <>
+            <h1>Welcome to React Task 5</h1>
+            <Link to="/login">Login</Link>
+            <br />
+            <Link to="/register">Register</Link>
+          </>
+        )}
       </div>
     );
   }

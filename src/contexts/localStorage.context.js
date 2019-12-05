@@ -1,9 +1,14 @@
 import React, { createContext, Component } from 'react';
 
+// UUID
 import uuid from 'uuid/v4';
 
 // HELPERS
-import { validateRegister, validateLogin } from '../helpers/validations';
+import {
+  validateRegister,
+  validateLogin,
+  validateChangePassword
+} from '../helpers/validations';
 
 export const LocalStorageContext = createContext();
 
@@ -32,6 +37,12 @@ export class LocalStorageProvider extends Component {
         // onChange login inputs
         email: '',
         password: ''
+      },
+      changePassword: {
+        // onChange change password inputs
+        currentPassword: '',
+        newPassword: '',
+        repeatPassword: ''
       }
     };
 
@@ -39,24 +50,17 @@ export class LocalStorageProvider extends Component {
     this.submitRegister = this.submitRegister.bind(this);
     this.handleLoginChange = this.handleLoginChange.bind(this);
     this.submitLogin = this.submitLogin.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
 
     this.logout = this.logout.bind(this);
     this.removeUser = this.removeUser.bind(this);
+    this.submitPasswordChange = this.submitPasswordChange.bind(this);
   }
 
   // setting admin account in localStorage
   componentDidMount() {
     localStorage.setItem('admin', JSON.stringify(this.props.admin));
   }
-
-  // za handleChange funkciju ispod
-
-  // razmisljao sam o ovome ali mislim da se cak i ne isplati zato sto treba argument da se ubaci sto znaci da na svaki function call sto je 4 puta u register.js i 2 u login.js
-  // treba da se pravi nova funckija a posto radi na handleChange znaci da ce dok user kuca na svako slovo da pravi po 4 funckije u register.js ili po 2 u login.js
-  // drugi nacin bi bio da napravim metodu koja ce da pozove ovu funkciju, sto znaci da se prave 2 posebne metode koje zovu tu funkciju umesto 2 funkcije to bi trebalo da je brze
-  // ali za sad mi te componente nemaju constructor tako da za svaku metodu bi trebao da pravim constructor da bi bindovo i ako sve uzmem u obzir mislim da je ovako brze mada opet  // ne znam koliko vremena react oduzme da napravi constructor pa cisto posle kad upgradujemo aplikaciju neka ga tu mozda nam zatreba
-
-  // realno ne znam ni dal bi funkcija radila nisam probao ali moze da se napravi
 
   // handleChange(item) {
   //   return function handleItemChange(event) {
@@ -166,6 +170,59 @@ export class LocalStorageProvider extends Component {
     localStorage.setItem('users', JSON.stringify(this.state.users));
   }
 
+  handlePasswordChange(event) {
+    const currentState = this.state.changePassword;
+    currentState[event.target.name] = event.target.value;
+    this.setState({ changePassword: currentState });
+  }
+
+  submitPasswordFailure() {
+    alert(validateChangePassword(this.state));
+  }
+
+  submitPasswordSuccess() {
+    const currentState = this.state.users;
+    currentState[
+      Object.keys(currentState)
+    ].password = this.state.changePassword.newPassword;
+
+    const clearChangePasswordState = {
+      currentPassword: '',
+      newPassword: '',
+      repeatPassword: ''
+    };
+    const currentUser = this.state.currentUser;
+    currentUser[
+      Object.keys(currentUser)[0]
+    ].password = this.state.changePassword.newPassword;
+    this.setState(
+      {
+        users: currentState,
+        currentUser: currentUser,
+        changePassword: clearChangePasswordState,
+        shouldRedirect: true
+      },
+      () => {
+        alert('Password Changed!');
+        localStorage.setItem('users', JSON.stringify(this.state.users));
+        localStorage.setItem(
+          'currentUser',
+          JSON.stringify(this.state.currentUser)
+        );
+        setTimeout(() => {
+          this.setState({ shouldRedirect: false });
+        }, 100);
+      }
+    );
+  }
+
+  submitPasswordChange(event) {
+    event.preventDefault();
+    validateChangePassword(this.state) === true
+      ? this.submitPasswordSuccess()
+      : this.submitPasswordFailure();
+  }
+
   render() {
     const {
       handleRegisterChange,
@@ -173,9 +230,18 @@ export class LocalStorageProvider extends Component {
       handleLoginChange,
       submitLogin,
       logout,
-      removeUser
+      removeUser,
+      handlePasswordChange,
+      submitPasswordChange
     } = this;
-    const { register, login, shouldRedirect, currentUser, users } = this.state;
+    const {
+      register,
+      login,
+      shouldRedirect,
+      currentUser,
+      users,
+      changePassword
+    } = this.state;
     return (
       <LocalStorageContext.Provider
         value={{
@@ -189,7 +255,10 @@ export class LocalStorageProvider extends Component {
           currentUser,
           logout,
           removeUser,
-          users
+          users,
+          handlePasswordChange,
+          submitPasswordChange,
+          changePassword
         }}
       >
         {this.props.children}

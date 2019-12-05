@@ -60,3 +60,18 @@ export function validateLogin(state, users) {
     return 'Password is not matching with your email';
   return { user: users[matchingID], success: true, id: matchingID };
 }
+
+export function validateChangePassword(state) {
+  const { changePassword, currentUser } = state;
+  if (
+    changePassword.currentPassword !==
+    currentUser[Object.keys(state.currentUser)[0]].password
+  )
+    return 'Wrong password';
+  else if (changePassword.newPassword === '') return 'Password is required!';
+  else if (changePassword.newPassword.length < 5)
+    return 'Password needs to have more than 5 characters!';
+  else if (changePassword.newPassword !== changePassword.repeatPassword)
+    return "Password don't match";
+  return true;
+}

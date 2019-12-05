@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 
-// COMPONENTS
-import Navbar from '../../Components/Navbar';
-
 // CONTEXT
 import { LocalStorageContext } from '../../contexts/localStorage.context';
 
@@ -23,7 +20,6 @@ export default class Login extends Component {
     const { email, password } = this.context.login;
     return (
       <div className="Login">
-        <Navbar />
         {/* if the user is logged in, it will not let him access the form */}
         {!currentUser ? (
           <>

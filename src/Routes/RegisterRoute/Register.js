@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 
-// COMPONENTS
-import Navbar from '../../Components/Navbar';
-
 // CONTEXT
 import { LocalStorageContext } from '../../contexts/localStorage.context';
 
@@ -22,7 +19,6 @@ export default class Register extends Component {
     const { username, email, password, repeatPassword } = this.context.register;
     return (
       <div className="Register">
-        <Navbar />
         {/* kad se user registruje on nije ulogovan tako da app nece da renderuje drugi deo ove komponente (kad je ulogovan > currentUser) koja ce da ga redirectuje, zbog toga imam i !shouldRedirect tako da ako nema currentUsera i ako je shouldRedirect false onda ce da renderuje drugi deo ovog if-a, koj ce da ga redirektuje xd */}
         {!currentUser && !shouldRedirect ? (
           <>
