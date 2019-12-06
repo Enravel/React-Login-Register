@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 // CONTEXT
 import { LocalStorageContext } from '../../contexts/localStorage.context';
 
-import { Link, Redirect } from 'react-router-dom';
+// ROUTER
+import { Link, Redirect } from '@reach/router';
+
 // SCSS
 import './Register.scss';
 
@@ -14,12 +16,12 @@ export default class Register extends Component {
       submitRegister,
       handleRegisterChange,
       shouldRedirect,
-      currentUser
+      currentUser,
+      register
     } = this.context;
-    const { username, email, password, repeatPassword } = this.context.register;
+    const { username, email, password, repeatPassword } = register;
     return (
       <div className="Register">
-        {/* kad se user registruje on nije ulogovan tako da app nece da renderuje drugi deo ove komponente (kad je ulogovan > currentUser) koja ce da ga redirectuje, zbog toga imam i !shouldRedirect tako da ako nema currentUsera i ako je shouldRedirect false onda ce da renderuje drugi deo ovog if-a, koj ce da ga redirektuje xd */}
         {!currentUser && !shouldRedirect ? (
           <>
             <h1>Register</h1>
@@ -71,10 +73,8 @@ export default class Register extends Component {
           </>
         ) : (
           <>
-            <h1>You already have an account</h1>
-            {/* contexts > localStorageContext > this.state.shouldRedirect its passed as true for 100ms in registerSuccess() */}
-            {/* zasto sam ovo uradio ovako je kad se user logina ocu da ga redirektuje a kad je loginovan a ukuca /login pise mu da im acc */}
-            {shouldRedirect && <Redirect push to="/login" />}
+            <p>You already have an account</p>
+            {shouldRedirect && <Redirect noThrow to="/login" />}
           </>
         )}
       </div>

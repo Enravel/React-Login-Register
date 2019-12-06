@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { LocalStorageContext } from '../../contexts/localStorage.context';
 
 // ROUTER
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from '@reach/router';
 
 // SCSS
 import './Profile.scss';
@@ -12,7 +12,7 @@ import './Profile.scss';
 export default class Profile extends Component {
   static contextType = LocalStorageContext;
   render() {
-    const { currentUser, logout } = this.context;
+    const { currentUser, logout, shouldRedirect } = this.context;
     return (
       <div className="Profile">
         {currentUser ? (
@@ -39,8 +39,10 @@ export default class Profile extends Component {
             <Link to="/login">Log In</Link>
             <br />
             <Link to="/register">Register</Link>
+            {shouldRedirect && <Redirect noThrow to="/login" />}
           </>
         )}
+        <hr />
       </div>
     );
   }

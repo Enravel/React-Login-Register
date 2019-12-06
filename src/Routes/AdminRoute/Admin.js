@@ -15,7 +15,6 @@ export default class Admin extends Component {
     const { currentUser, users, removeUser } = this.context;
     return (
       <div className="Admin">
-        {/* keys are generated using uuid, but in the admin case the key is 'admin' */}
         {currentUser && currentUser.admin ? (
           <>
             <h1>Admin</h1>

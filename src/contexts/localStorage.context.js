@@ -13,7 +13,6 @@ import {
 export const LocalStorageContext = createContext();
 
 export class LocalStorageProvider extends Component {
-  // admin info that is stored in localStorage on componentDidMount()
   static defaultProps = {
     admin: {
       email: 'admin@admin.com',
@@ -23,23 +22,20 @@ export class LocalStorageProvider extends Component {
   constructor() {
     super();
     this.state = {
-      users: JSON.parse(localStorage.getItem('users')) || {}, // used to update localStorage
-      currentUser: JSON.parse(localStorage.getItem('currentUser')) || null, // logged in user
-      shouldRedirect: false, // used to give components info about redirecting
+      users: JSON.parse(localStorage.getItem('users')) || {},
+      currentUser: JSON.parse(localStorage.getItem('currentUser')) || null,
+      shouldRedirect: false,
       register: {
-        // onChange register inputs
         username: '',
         email: '',
         password: '',
         repeatPassword: ''
       },
       login: {
-        // onChange login inputs
         email: '',
         password: ''
       },
       changePassword: {
-        // onChange change password inputs
         currentPassword: '',
         newPassword: '',
         repeatPassword: ''
@@ -56,11 +52,11 @@ export class LocalStorageProvider extends Component {
     this.removeUser = this.removeUser.bind(this);
     this.submitPasswordChange = this.submitPasswordChange.bind(this);
   }
-
-  // setting admin account in localStorage
   componentDidMount() {
     localStorage.setItem('admin', JSON.stringify(this.props.admin));
   }
+
+  // ovo bi bilo dobro da radi
 
   // handleChange(item) {
   //   return function handleItemChange(event) {
@@ -77,14 +73,12 @@ export class LocalStorageProvider extends Component {
   }
 
   registrationSuccess(previousState) {
-    // pokusavao sam na bolji nacin sa prevState ali nije radilo kako treba
     const currentState = this.state.users;
     const newState = {
       username: previousState.username,
       email: previousState.email,
       password: previousState.password
     };
-    // stvarno ne znam kako drugacije da resetujem ceo state objekat a da ima key-eve kao pre
     const clearRegister = {
       username: '',
       email: '',
@@ -92,7 +86,6 @@ export class LocalStorageProvider extends Component {
       repeatPassword: ''
     };
     currentState[uuid()] = newState;
-    // updates state.users => updates localStorage | cleans inputs and sets shouldRedirect to true so Register component knows if it should redirect
     this.setState(
       { users: currentState, register: clearRegister, shouldRedirect: true },
       () => {
@@ -105,7 +98,7 @@ export class LocalStorageProvider extends Component {
   }
 
   registrationFailure() {
-    alert(validateRegister(this.state.register, this.state.users)); // alerts returned strings from helpers/validation.js > validateRegister()
+    alert(validateRegister(this.state.register, this.state.users));
   }
 
   submitRegister(event) {
@@ -124,11 +117,8 @@ export class LocalStorageProvider extends Component {
   }
 
   loginSuccess() {
-    // getting the user object from localStorage that is about to get logged in
     const { user, id } = validateLogin(this.state.login, this.state.users);
-    // setting currentUser in state (logged in user) and setting shouldRedirect to true for 100ms (this redirect is happening in Login.js (LoginRoute folder))
     this.setState({ currentUser: { [id]: user }, shouldRedirect: true }, () => {
-      // saving currentUser (logged in user) in localStorage
       localStorage.setItem(
         'currentUser',
         JSON.stringify(this.state.currentUser)
@@ -140,19 +130,22 @@ export class LocalStorageProvider extends Component {
   }
 
   loginFailure() {
-    alert(validateLogin(this.state.login, this.state.users)); // alerts returned strings from helpers/validation.js > validateLogin()
+    alert(validateLogin(this.state.login, this.state.users));
   }
 
   submitLogin(event) {
     event.preventDefault();
-    // extracting the success boolean from validateLogin function in helpers/validations.js
     const { success } = validateLogin(this.state.login, this.state.users);
     success === true ? this.loginSuccess() : this.loginFailure();
   }
 
   logout() {
-    this.setState({ currentUser: null });
-    localStorage.removeItem('currentUser');
+    this.setState({ currentUser: null, shouldRedirect: true }, () => {
+      localStorage.removeItem('currentUser');
+      setTimeout(() => {
+        this.setState({ shouldRedirect: false });
+      }, 100);
+    });
   }
 
   removeUser(email) {

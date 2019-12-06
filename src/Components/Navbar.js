@@ -24,6 +24,7 @@ export default class Navbar extends Component {
             <h4>You are not logged in</h4>
           </>
         )}
+        <hr />
       </div>
     );
   }

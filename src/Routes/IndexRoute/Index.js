@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 // CONTEXT
 import { LocalStorageContext } from '../../contexts/localStorage.context';
 
-// ROUTE STUFF
-import { Link } from 'react-router-dom';
+// ROUTER
+import { Link } from '@reach/router';
 
 // SCSS
 import './Index.scss';

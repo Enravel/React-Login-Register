@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-// REACT-ROUTER
-import { Link, Redirect } from 'react-router-dom';
+// ROUTER
+import { Link, Redirect } from '@reach/router';
 
 // CONTEXT
 import { LocalStorageContext } from '../../contexts/localStorage.context';
@@ -91,7 +91,7 @@ export default class EditProfile extends Component {
             <Link to="/register">Register</Link>
           </>
         )}
-        {shouldRedirect && <Redirect push to="/profile" />}
+        {shouldRedirect && <Redirect noThrow to="/profile" />}
       </div>
     );
   }

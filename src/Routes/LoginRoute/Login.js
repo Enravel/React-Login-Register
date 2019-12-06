@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 // CONTEXT
 import { LocalStorageContext } from '../../contexts/localStorage.context';
 
-import { Link, Redirect } from 'react-router-dom';
+// ROUTER
+import { Link, Redirect } from '@reach/router';
 
 // SCSS
 import './Login.scss';
@@ -20,7 +21,6 @@ export default class Login extends Component {
     const { email, password } = this.context.login;
     return (
       <div className="Login">
-        {/* if the user is logged in, it will not let him access the form */}
         {!currentUser ? (
           <>
             <h1>Login</h1>
@@ -54,14 +54,12 @@ export default class Login extends Component {
           </>
         ) : (
           <>
-            <h1>You are already logged in!</h1>
-            {/* contexts > localStorageContext > this.state.shouldRedirect its passed as true for 100ms in loginSuccess() */}
-            {/* every user has a uuid() generated id, instead of admin so thats how the app knows if its admin and redirects accordingly */}
+            <p>You are already logged in!</p>
             {shouldRedirect &&
               (currentUser.admin ? (
-                <Redirect push to="/admin" />
+                <Redirect noThrow to="/admin" />
               ) : (
-                <Redirect push to="/home" />
+                <Redirect noThrow to="/home" />
               ))}
           </>
         )}

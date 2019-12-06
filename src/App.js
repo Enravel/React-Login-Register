@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // ROUTER
-import { Route, Switch } from 'react-router-dom';
+import { Router } from '@reach/router';
 
 // COMPONENT ROUTES
 import Index from './Routes/IndexRoute/Index';
@@ -16,6 +16,9 @@ import NotFound from './Routes/NotFoundRoute/NotFound';
 // COMPONENTS
 import Navbar from './Components/Navbar';
 
+// CONTEXT
+import { LocalStorageProvider } from './contexts/localStorage.context';
+
 // SCSS
 import './App.scss';
 
@@ -23,40 +26,19 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Switch>
-          <Route exact path="/">
-            <Navbar />
-            <Index />
-          </Route>
-          <Route exact path="/login">
-            <Navbar />
-            <Login />
-          </Route>
-          <Route exact path="/register">
-            <Navbar />
-            <Register />
-          </Route>
-          <Route exact path="/home">
-            <Navbar />
-            <Home />
-          </Route>
-          <Route exact path="/profile">
-            <Navbar />
-            <Profile />
-          </Route>
-          <Route exact path="/profile/edit">
-            <Navbar />
-            <EditProfile />
-          </Route>
-          <Route path="/admin">
-            <Navbar />
-            <Admin />
-          </Route>
-          <Route path="*">
-            <Navbar />
-            <NotFound />
-          </Route>
-        </Switch>
+        <LocalStorageProvider>
+          <Navbar />
+          <Router>
+            <Index path="/" />
+            <Login path="login" />
+            <Register path="register" />
+            <Home path="home" />
+            <Profile path="profile" />
+            <EditProfile path="profile/edit" />
+            <Admin path="admin" />
+            <NotFound default />
+          </Router>
+        </LocalStorageProvider>
       </div>
     );
   }
