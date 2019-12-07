@@ -14,10 +14,26 @@ export default class EditProfile extends Component {
   constructor() {
     super();
     this.state = {
-      edit: false
+      edit: false,
+
+      currentPassword: '',
+      newPassword: '',
+      repeatPassword: ''
     };
 
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.submitPasswordChange = this.submitPasswordChange.bind(this);
+  }
+
+  submitPasswordChange(event) {
+    event.preventDefault();
+    // dal je ovo greska, salje se ceo state sa sve editom pa se posle ekstraktuje sve osim edita ?
+    this.context.submitPasswordChange(this.state);
+  }
+
+  handleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   toggleEdit() {
@@ -25,14 +41,8 @@ export default class EditProfile extends Component {
   }
 
   render() {
-    const { edit } = this.state;
-    const {
-      currentUser,
-      handlePasswordChange,
-      changePassword,
-      submitPasswordChange,
-      shouldRedirect
-    } = this.context;
+    const { edit, currentPassword, newPassword, repeatPassword } = this.state;
+    const { currentUser, shouldRedirect } = this.context;
     return (
       <div className="EditProfile">
         {currentUser && currentUser.admin ? (
@@ -46,32 +56,32 @@ export default class EditProfile extends Component {
             ) : (
               <>
                 <h3>Enter your password and new username!</h3>
-                <form onSubmit={submitPasswordChange}>
+                <form onSubmit={this.submitPasswordChange}>
                   <input
-                    onChange={handlePasswordChange}
+                    onChange={this.handleChange}
                     name="currentPassword"
                     type="password"
                     label="Current Password"
                     placeholder="Current Password"
-                    value={changePassword.currentPassword}
+                    value={currentPassword}
                   />
                   <br />
                   <input
-                    onChange={handlePasswordChange}
+                    onChange={this.handleChange}
                     name="newPassword"
                     type="password"
                     label="New Password"
                     placeholder="New Password"
-                    value={changePassword.newPassword}
+                    value={newPassword}
                   />
                   <br />
                   <input
-                    onChange={handlePasswordChange}
+                    onChange={this.handleChange}
                     name="repeatPassword"
                     type="password"
                     label="Repeat Password"
                     placeholder="Repeat Password"
-                    value={changePassword.repeatPassword}
+                    value={repeatPassword}
                   />
                   <br />
                   <button>Submit</button>

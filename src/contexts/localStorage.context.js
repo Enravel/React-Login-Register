@@ -24,29 +24,11 @@ export class LocalStorageProvider extends Component {
     this.state = {
       users: JSON.parse(localStorage.getItem('users')) || {},
       currentUser: JSON.parse(localStorage.getItem('currentUser')) || null,
-      shouldRedirect: false,
-      register: {
-        username: '',
-        email: '',
-        password: '',
-        repeatPassword: ''
-      },
-      login: {
-        email: '',
-        password: ''
-      },
-      changePassword: {
-        currentPassword: '',
-        newPassword: '',
-        repeatPassword: ''
-      }
+      shouldRedirect: false
     };
 
-    this.handleRegisterChange = this.handleRegisterChange.bind(this);
     this.submitRegister = this.submitRegister.bind(this);
-    this.handleLoginChange = this.handleLoginChange.bind(this);
     this.submitLogin = this.submitLogin.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
 
     this.logout = this.logout.bind(this);
     this.removeUser = this.removeUser.bind(this);
@@ -56,22 +38,6 @@ export class LocalStorageProvider extends Component {
     localStorage.setItem('admin', JSON.stringify(this.props.admin));
   }
 
-  // ovo bi bilo dobro da radi
-
-  // handleChange(item) {
-  //   return function handleItemChange(event) {
-  //     const currentState = this.state[item];
-  //     currentState[event.target.name] = event.target.value;
-  //     this.setState({ [item]: currentState });
-  //   };
-  // }
-
-  handleRegisterChange(event) {
-    const currentState = this.state.register;
-    currentState[event.target.name] = event.target.value;
-    this.setState({ register: currentState });
-  }
-
   registrationSuccess(previousState) {
     const currentState = this.state.users;
     const newState = {
@@ -79,45 +45,27 @@ export class LocalStorageProvider extends Component {
       email: previousState.email,
       password: previousState.password
     };
-    const clearRegister = {
-      username: '',
-      email: '',
-      password: '',
-      repeatPassword: ''
-    };
     currentState[uuid()] = newState;
-    this.setState(
-      { users: currentState, register: clearRegister, shouldRedirect: true },
-      () => {
-        localStorage.setItem('users', JSON.stringify(this.state.users));
-        setTimeout(() => {
-          this.setState({ shouldRedirect: false });
-        }, 100);
-      }
-    );
+    this.setState({ users: currentState, shouldRedirect: true }, () => {
+      localStorage.setItem('users', JSON.stringify(this.state.users));
+      setTimeout(() => {
+        this.setState({ shouldRedirect: false });
+      }, 100);
+    });
   }
 
-  registrationFailure() {
-    alert(validateRegister(this.state.register, this.state.users));
+  registrationFailure(state) {
+    alert(validateRegister(state, this.state.users));
   }
 
-  submitRegister(event) {
-    event.preventDefault();
-    validateRegister(this.state.register, this.state.users) === true
-      ? this.registrationSuccess(this.state.register)
-      : this.registrationFailure();
+  submitRegister(state) {
+    validateRegister(state, this.state.users) === true
+      ? this.registrationSuccess(state)
+      : this.registrationFailure(state);
   }
 
-  // LOGIN
-
-  handleLoginChange(event) {
-    const currentState = this.state.login;
-    currentState[event.target.name] = event.target.value;
-    this.setState({ login: currentState });
-  }
-
-  loginSuccess() {
-    const { user, id } = validateLogin(this.state.login, this.state.users);
+  loginSuccess(state) {
+    const { user, id } = validateLogin(state, this.state.users);
     this.setState({ currentUser: { [id]: user }, shouldRedirect: true }, () => {
       localStorage.setItem(
         'currentUser',
@@ -129,14 +77,13 @@ export class LocalStorageProvider extends Component {
     });
   }
 
-  loginFailure() {
-    alert(validateLogin(this.state.login, this.state.users));
+  loginFailure(state) {
+    alert(validateLogin(state, this.state.users));
   }
 
-  submitLogin(event) {
-    event.preventDefault();
-    const { success } = validateLogin(this.state.login, this.state.users);
-    success === true ? this.loginSuccess() : this.loginFailure();
+  submitLogin(state) {
+    const { success } = validateLogin(state, this.state.users);
+    success === true ? this.loginSuccess(state) : this.loginFailure(state);
   }
 
   logout() {
@@ -163,21 +110,13 @@ export class LocalStorageProvider extends Component {
     localStorage.setItem('users', JSON.stringify(this.state.users));
   }
 
-  handlePasswordChange(event) {
-    const currentState = this.state.changePassword;
-    currentState[event.target.name] = event.target.value;
-    this.setState({ changePassword: currentState });
+  submitPasswordFailure(state) {
+    alert(validateChangePassword(state));
   }
 
-  submitPasswordFailure() {
-    alert(validateChangePassword(this.state));
-  }
-
-  submitPasswordSuccess() {
+  submitPasswordSuccess(state) {
     const currentState = this.state.users;
-    currentState[
-      Object.keys(currentState)
-    ].password = this.state.changePassword.newPassword;
+    currentState[Object.keys(currentState)[0]].password = state.newPassword;
 
     const clearChangePasswordState = {
       currentPassword: '',
@@ -185,9 +124,7 @@ export class LocalStorageProvider extends Component {
       repeatPassword: ''
     };
     const currentUser = this.state.currentUser;
-    currentUser[
-      Object.keys(currentUser)[0]
-    ].password = this.state.changePassword.newPassword;
+    currentUser[Object.keys(currentUser)[0]].password = state.newPassword;
     this.setState(
       {
         users: currentState,
@@ -209,49 +146,32 @@ export class LocalStorageProvider extends Component {
     );
   }
 
-  submitPasswordChange(event) {
-    event.preventDefault();
-    validateChangePassword(this.state) === true
-      ? this.submitPasswordSuccess()
-      : this.submitPasswordFailure();
+  submitPasswordChange(state) {
+    validateChangePassword(this.state, state) === true
+      ? this.submitPasswordSuccess(state)
+      : this.submitPasswordFailure(state);
   }
 
   render() {
     const {
-      handleRegisterChange,
       submitRegister,
-      handleLoginChange,
       submitLogin,
       logout,
       removeUser,
-      handlePasswordChange,
       submitPasswordChange
     } = this;
-    const {
-      register,
-      login,
-      shouldRedirect,
-      currentUser,
-      users,
-      changePassword
-    } = this.state;
+    const { shouldRedirect, currentUser, users } = this.state;
     return (
       <LocalStorageContext.Provider
         value={{
-          handleRegisterChange,
           submitRegister,
-          register,
           shouldRedirect,
-          login,
-          handleLoginChange,
           submitLogin,
           currentUser,
           logout,
           removeUser,
           users,
-          handlePasswordChange,
-          submitPasswordChange,
-          changePassword
+          submitPasswordChange
         }}
       >
         {this.props.children}

@@ -11,23 +11,36 @@ import './Register.scss';
 
 export default class Register extends Component {
   static contextType = LocalStorageContext;
+  constructor() {
+    super();
+    this.state = {
+      username: '',
+      email: '',
+      password: '',
+      repeatPassword: ''
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.submitRegister = this.submitRegister.bind(this);
+  }
+  submitRegister(event) {
+    event.preventDefault();
+    this.context.submitRegister(this.state);
+  }
+  handleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
   render() {
-    const {
-      submitRegister,
-      handleRegisterChange,
-      shouldRedirect,
-      currentUser,
-      register
-    } = this.context;
-    const { username, email, password, repeatPassword } = register;
+    const { shouldRedirect, currentUser } = this.context;
+    const { username, email, password, repeatPassword } = this.state;
     return (
       <div className="Register">
         {!currentUser && !shouldRedirect ? (
           <>
             <h1>Register</h1>
-            <form onSubmit={submitRegister}>
+            <form onSubmit={this.submitRegister}>
               <input
-                onChange={handleRegisterChange}
+                onChange={this.handleChange}
                 name="username"
                 type="text"
                 placeholder="Username"
@@ -36,7 +49,7 @@ export default class Register extends Component {
               />
               <br />
               <input
-                onChange={handleRegisterChange}
+                onChange={this.handleChange}
                 name="email"
                 type="email"
                 placeholder="Email Address"
@@ -45,7 +58,7 @@ export default class Register extends Component {
               />
               <br />
               <input
-                onChange={handleRegisterChange}
+                onChange={this.handleChange}
                 name="password"
                 type="password"
                 placeholder="Password"
@@ -54,7 +67,7 @@ export default class Register extends Component {
               />
               <br />
               <input
-                onChange={handleRegisterChange}
+                onChange={this.handleChange}
                 name="repeatPassword"
                 type="password"
                 placeholder="Repeat Password"
