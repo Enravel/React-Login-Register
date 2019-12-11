@@ -51,9 +51,7 @@ export function validateLogin(state, users) {
 export function validateChangePassword(state, localState) {
   const { currentPassword, newPassword, repeatPassword } = localState;
   const { currentUser } = state;
-  if (
-    currentPassword !== currentUser[Object.keys(state.currentUser)[0]].password
-  )
+  if (currentPassword !== currentUser[Object.keys(currentUser)[0]].password)
     return 'Wrong password';
   else if (newPassword === '') return 'Password is required!';
   else if (newPassword.length < 5)

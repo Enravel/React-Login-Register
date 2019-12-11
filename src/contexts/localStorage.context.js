@@ -111,7 +111,7 @@ export class LocalStorageProvider extends Component {
   }
 
   submitPasswordFailure(state) {
-    alert(validateChangePassword(state));
+    alert(validateChangePassword(this.state, state));
   }
 
   submitPasswordSuccess(state) {

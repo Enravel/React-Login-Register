@@ -1,0 +1,113 @@
+@import 'variables.scss';
+
+* {
+  color: $color-text-dark;
+}
+p,
+h1,
+h3,
+h4 {
+  color: $color-text-dark;
+}
+
+.flex-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+.group {
+  margin: 3rem auto 2rem auto;
+}
+// INPUT
+// mozemo da promenio u klasu ako nam zatreba drugaciji input negde
+input {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  width: 20rem;
+  box-shadow: 0px 0px 10px $shade-box-shadow,
+    inset 0 0 10px rgba($color-dark, 0.15);
+  border: none;
+  border-bottom: 2px solid $color-main;
+  border-radius: 10px;
+  outline: none;
+  padding: 10px 10px 8px 10px;
+  color: $color-text-dark;
+  transition: box-shadow 0.3s ease-out, border 0.3s ease-out;
+
+  &:hover {
+    box-shadow: 0px 0px 10px $shade-box-shadow,
+      inset 0 -100px 100px $color-light;
+  }
+
+  &:focus {
+    color: rgba($color-text-dark, 0.7);
+  }
+}
+// BUTTONS
+.button-main {
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 10px 10px 8px 10px;
+  width: 12rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: $color-text-dark;
+  margin: 1rem;
+  background: white;
+  box-shadow: 0 0 5px $shade-box-shadow, inset 0 0 0 $shade-box-shadow;
+  border: none;
+  border-bottom: 2px solid $color-main;
+  border-radius: 10px;
+  color: $color-text-dark;
+  transition: box-shadow 0.3s ease-out;
+
+  &:hover {
+    box-shadow: 0 0 5px $shade-box-shadow, inset 0 -100px 100px $color-main;
+    color: $color-light;
+
+    & > a {
+      color: $color-light;
+    }
+  }
+
+  &:active {
+    transform: translateY(5%);
+  }
+
+  &:focus {
+    outline: 10px black;
+  }
+}
+
+a {
+  // color: $color-text-dark;
+  // transition: color 0.1s ease-in-out;
+  color: $color-dark;
+  transition: color 0.2s ease-out;
+
+  &:hover {
+    color: $color-main;
+  }
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba($color-text-dark, 0.6);
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: rgba($color-text-dark, 0.6);
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: rgba($color-text-dark, 0.6);
+}
+input:-webkit-autofill {
+  -webkit-text-fill-color: $color-text-dark !important;
+}

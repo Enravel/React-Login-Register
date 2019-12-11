@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 // CONTEXT
-import { LocalStorageContext } from '../../contexts/localStorage.context';
+import { LocalStorageContext } from '../contexts/localStorage.context';
 
 // UUID
 import uuid from 'uuid/v4';
 
 // SCSS
-import './Admin.scss';
+import '../Styles/Admin.scss';
 
 export default class Admin extends Component {
   static contextType = LocalStorageContext;

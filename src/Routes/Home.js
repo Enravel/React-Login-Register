@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 // CONTEXT
-import { LocalStorageContext } from '../../contexts/localStorage.context';
+import { LocalStorageContext } from '../contexts/localStorage.context';
 
 // ROUTER
 import { Link } from '@reach/router';
 
 // SCSS
-import './Home.scss';
+import '../Styles/Home.scss';
 
 export default class Home extends Component {
   static contextType = LocalStorageContext;
@@ -18,7 +18,9 @@ export default class Home extends Component {
         {currentUser ? (
           <>
             <h1>Home</h1>
-            <Link to="/profile">Profile</Link>
+            <Link to="/profile">
+              <button className="button-main">Profile</button>
+            </Link>
           </>
         ) : (
           <p>You have to log in to see this page</p>

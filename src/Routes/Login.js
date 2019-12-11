@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 // CONTEXT
-import { LocalStorageContext } from '../../contexts/localStorage.context';
+import { LocalStorageContext } from '../contexts/localStorage.context';
 
 // ROUTER
 import { Link, Redirect } from '@reach/router';
 
 // SCSS
-import './Login.scss';
+import '../Styles/Login.scss';
 
 export default class Login extends Component {
   static contextType = LocalStorageContext;
@@ -38,31 +38,29 @@ export default class Login extends Component {
       <div className="Login">
         {!currentUser ? (
           <>
-            <h1>Login</h1>
+            <h1 className="Login-header">Login</h1>
             <form onSubmit={this.submitLogin}>
-              <input
-                onChange={this.handleChange}
-                name="email"
-                type="email"
-                placeholder="Email"
-                label="Email"
-                value={email}
-              />
-              <br />
-              <input
-                onChange={this.handleChange}
-                name="password"
-                type="password"
-                placeholder="Password"
-                label="Password"
-                value={password}
-              />
-              <br />
-              <br />
-              <button>Login!</button>
+              <div className="flex-column group">
+                <input
+                  onChange={this.handleChange}
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  label="Email"
+                  value={email}
+                  spellcheck="false"
+                />
+                <input
+                  onChange={this.handleChange}
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  label="Password"
+                  value={password}
+                />
+                <button className="button-main">Login!</button>
+              </div>
             </form>
-            <br />
-            <br />
             <Link to="/register">
               Don't have an account ? Click here to register!
             </Link>

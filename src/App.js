@@ -4,14 +4,15 @@ import React, { Component } from 'react';
 import { Router } from '@reach/router';
 
 // COMPONENT ROUTES
-import Index from './Routes/IndexRoute/Index';
-import Login from './Routes/LoginRoute/Login';
-import Register from './Routes/RegisterRoute/Register';
-import Home from './Routes/HomeRoute/Home';
-import Profile from './Routes/ProfileRoute/Profile';
-import EditProfile from './Routes/EditProfileRoute/EditProfile';
-import Admin from './Routes/AdminRoute/Admin';
-import NotFound from './Routes/NotFoundRoute/NotFound';
+import Index from './Routes/Index';
+import Login from './Routes/Login';
+import Register from './Routes/Register';
+import Home from './Routes/Home';
+import Profile from './Routes/Profile';
+import EditProfile from './Routes/EditProfile';
+import EditProfilePassword from './Routes/EditProfilePassword';
+import Admin from './Routes/Admin';
+import NotFound from './Routes/NotFound';
 
 // COMPONENTS
 import Navbar from './Components/Navbar';
@@ -21,6 +22,7 @@ import { LocalStorageProvider } from './contexts/localStorage.context';
 
 // SCSS
 import './App.scss';
+import './Styles/theme.scss';
 
 export default class App extends Component {
   render() {
@@ -35,6 +37,7 @@ export default class App extends Component {
             <Home path="home" />
             <Profile path="profile" />
             <EditProfile path="profile/edit" />
+            <EditProfilePassword path="profile/edit/password" />
             <Admin path="admin" />
             <NotFound default />
           </Router>

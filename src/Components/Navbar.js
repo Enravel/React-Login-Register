@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { LocalStorageContext } from '../contexts/localStorage.context';
 
 // SCSS
-import './Navbar.scss';
+import '../Styles/Navbar.scss';
 
 export default class Navbar extends Component {
   static contextType = LocalStorageContext;
@@ -24,7 +24,6 @@ export default class Navbar extends Component {
             <h4>You are not logged in</h4>
           </>
         )}
-        <hr />
       </div>
     );
   }
