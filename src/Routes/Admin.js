@@ -15,7 +15,7 @@ export default class Admin extends Component {
     const { currentUser, users, removeUser } = this.context;
     return (
       <div className="Admin">
-        {currentUser && currentUser.admin ? (
+        {currentUser.admin ? (
           <>
             <h1>Admin</h1>
             {Object.keys(users).length > 0 ? (

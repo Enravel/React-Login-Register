@@ -15,7 +15,7 @@ export default class Navbar extends Component {
         {currentUser ? (
           <>
             <h4>
-              You are logged in as{' '}
+              You are logged in as  
               {currentUser[Object.keys(currentUser)[0]].username}
             </h4>
           </>

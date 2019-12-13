@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { LocalStorageContext } from '../contexts/localStorage.context';
 
 // ROUTER
-import { Link, Redirect } from '@reach/router';
+import { Link } from '@reach/router';
 
 // SCSS
 import '../Styles/Login.scss';
@@ -32,50 +32,41 @@ export default class Login extends Component {
   }
 
   render() {
-    const { shouldRedirect, currentUser } = this.context;
     const { email, password } = this.state;
     return (
       <div className="Login">
-        {!currentUser ? (
-          <>
-            <h1 className="Login-header">Login</h1>
-            <form onSubmit={this.submitLogin}>
-              <div className="flex-column group">
-                <input
-                  onChange={this.handleChange}
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  label="Email"
-                  value={email}
-                  spellcheck="false"
-                />
-                <input
-                  onChange={this.handleChange}
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  label="Password"
-                  value={password}
-                />
-                <button className="button-main">Login!</button>
-              </div>
-            </form>
-            <Link to="/register">
-              Don't have an account ? Click here to register!
-            </Link>
-          </>
-        ) : (
-          <>
-            <p>You are already logged in!</p>
-            {shouldRedirect &&
-              (currentUser.admin ? (
-                <Redirect noThrow to="/admin" />
-              ) : (
-                <Redirect noThrow to="/home" />
-              ))}
-          </>
-        )}
+        <h1 className="Login-header">Login</h1>
+        <form onSubmit={this.submitLogin}>
+          <div className="flex-column group">
+            <input
+              onChange={this.handleChange}
+              name="email"
+              type="email"
+              placeholder="Email"
+              label="Email"
+              value={email}
+              spellCheck="false"
+            />
+            <input
+              onChange={this.handleChange}
+              name="password"
+              type="password"
+              placeholder="Password"
+              label="Password"
+              value={password}
+            />
+            <button className="button-main">Login!</button>
+          </div>
+        </form>
+        <Link to="/register">
+          Don't have an account ? Click here to register!
+        </Link>
+        {/* {shouldRedirect &&
+          (currentUser.admin ? (
+            <Redirect noThrow to="/admin" />
+          ) : (
+            <Redirect noThrow to="/home" />
+          ))} */}
       </div>
     );
   }

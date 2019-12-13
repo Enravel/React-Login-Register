@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 
-// ROUTER
-import { Redirect } from '@reach/router';
-
 // CONTEXT
 import { LocalStorageContext } from '../contexts/localStorage.context';
 
@@ -31,11 +28,11 @@ export default class EditProfilePassword extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
   render() {
+    const { currentUser } = this.context;
     const { currentPassword, newPassword, repeatPassword } = this.state;
-    const { currentUser, shouldRedirect } = this.context;
     return (
       <div className="EditProfilePassword">
-        {currentUser ? (
+        {!currentUser.admin ? (
           <>
             <h3>Edit your password!</h3>
             <form onSubmit={this.submitPasswordChange}>
@@ -67,10 +64,9 @@ export default class EditProfilePassword extends Component {
                 <button className="button-main">Submit</button>
               </div>
             </form>
-            {shouldRedirect && <Redirect noThrow to="/profile" />}{' '}
           </>
         ) : (
-          'You are not logged in!'
+          <h3>Admin info can't be changed</h3>
         )}
       </div>
     );
