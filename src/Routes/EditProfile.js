@@ -19,7 +19,7 @@ export default class EditProfile extends Component {
         {currentUser.admin ? (
           <h4>You cant change admin information!</h4>
         ) : (
-          <Link noThrow to="/profile/edit/password">
+          <Link nothrow="true" to="/profile/edit/password">
             <button className="button-main">Edit Password</button>
           </Link>
         )}
